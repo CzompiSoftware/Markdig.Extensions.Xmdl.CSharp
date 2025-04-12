@@ -21,11 +21,11 @@ internal class ExecutableCodeRenderer(IExecutableCodeOptions options, MarkdownPi
     private readonly IExecutableCodeOptions _options = options;
     private readonly MarkdownPipeline _pipeline = pipeline;
 
-    public override async Task<(ExecutableCodeState, ExecutableCodeResult, List<string>)> ExecuteAsync(string script, string previousScript = null)
+    public override async Task<(ExecutableCodeState, ExecutableCodeResult, List<string>)> ExecuteAsync(string script, MarkdownParserContext context, string previousScript = null)
     {
         List<string> errors = new();
-        ScriptContext context = new(SourceText.From((previousScript ?? Globals.GlobalScript) ?? script), _options.WorkingDirectory ?? Directory.GetCurrentDirectory(), _options.Arguments, null, ((ExecutableCodeOptions)_options).OptimizationLevel ?? OptimizationLevel.Debug, ScriptMode.Eval);
-        ScriptCompilationContext<object> compilationContext = Globals.ScriptCompiler.CreateCompilationContext<object, CommandLineScriptGlobals>(context);
+        ScriptContext scriptContext = new(SourceText.From((previousScript ?? Globals.GlobalScript) ?? script), _options.WorkingDirectory ?? Directory.GetCurrentDirectory(), _options.Arguments, null, ((ExecutableCodeOptions)_options).OptimizationLevel ?? OptimizationLevel.Debug, ScriptMode.Eval);
+        ScriptCompilationContext<object> compilationContext = Globals.ScriptCompiler.CreateCompilationContext<object, CommandLineScriptGlobals>(scriptContext);
         var globals = new CommandLineScriptGlobals(Globals.ScriptConsole.Out, CSharpObjectFormatter.Instance);
         ScriptState scriptState = null;
         try

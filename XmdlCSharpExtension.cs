@@ -32,7 +32,7 @@ public class XmdlCSharpExtension : XmdlBaseExtension
     {
         base.Setup(pipeline);
         pipeline.InlineParsers.ReplaceOrAdd<ExecutableCodeInlineParser>(new ExecutableCodeInlineParser("cs", "C#"));
-        pipeline.InlineParsers.ReplaceOrAdd<ExecutableCodeBlockParser>(new ExecutableCodeBlockParser("cs", "C#"));
+        pipeline.BlockParsers.ReplaceOrAdd<ExecutableCodeBlockParser>(new ExecutableCodeBlockParser("cs", "C#"));
     }
     public override void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
     {
